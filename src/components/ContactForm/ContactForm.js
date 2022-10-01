@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { Form, Label, Input, Button } from "./ContactForm.styled";
-import PropTypes from "prop-types"
 
 
 export class ContactForm extends Component{
@@ -9,16 +8,12 @@ export class ContactForm extends Component{
         number:''
 }
 
-//   handleChange = e => {
-//     const { name, value } = e.currentTarget
-    
-//     this.setState({ [name]: value });
-//     }
     handleChange = (name, number) => e => {
     const { target } = e;
 
     this.setState(() => ({
-        [name]: target.value
+        [name]: target.value,
+        [number]: target.value,
     }));
   };
     
