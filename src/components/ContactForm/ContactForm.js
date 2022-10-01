@@ -2,7 +2,8 @@ import { Component } from "react";
 
 export class ContactForm extends Component{
     state = {
-    name:''
+        name: '',
+        number:''
 }
 
 //   handleChange = e => {
@@ -10,24 +11,28 @@ export class ContactForm extends Component{
     
 //     this.setState({ [name]: value });
 //     }
-    handleChange = name => e => {
+    handleChange = (name, number) => e => {
     const { target } = e;
 
     this.setState(() => ({
-      [name]: target.value,
+        [name]: target.value
     }));
   };
     
+    
+
   handleSubmit = e => {
     e.preventDefault()
 const { onSubmit } = this.props;
       onSubmit(this.state);
       this.reset();
+      
     
     }
     reset = () => {
         this.setState(() => ({
-            name:''
+            name: '',
+            number:''
         }))
     }
 
@@ -44,8 +49,20 @@ const { onSubmit } = this.props;
                 title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                 required
             />
-        </label>
-        <button type="submit">Add friend</button>
+                </label>
+                <label> Number
+                    <input
+                        onChange={this.handleChange('number')}
+                value={this.state.number}
+                        type="tel"
+                        name="number"
+                        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+                        required
+                    />
+                </label>
+                <button type="submit">Add friend</button>
+                
         </form>
         )
     }
