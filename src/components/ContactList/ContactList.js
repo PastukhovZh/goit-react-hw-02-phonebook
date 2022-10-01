@@ -1,13 +1,30 @@
+import { FriendList, FriendItem, Button, Wrap, Item } from "./ContactList.styled"
+import PropTypes from "prop-types"
 
-
-export const ContactList = ({ contacts }) => {
-    return(<ul>
+export const ContactList = ({ contacts, onDelete }) => {
+    return(<FriendList>
         {contacts.map(({id, name, number}) => (
-                <li key={id}>
-                <p>{name}</p>
-                <p>{number}</p>
-                </li>
+            <FriendItem key={id}>
+                <Wrap>
+                <Item>{name}</Item>
+                <Item>{number}</Item>
+                </Wrap>
+                <Button
+                    type="button"
+                    onClick={() => onDelete(id)}>Delete</Button>
+                </FriendItem>
             )
         )}
-    </ul>)
+    </FriendList>)
+}
+
+
+FriendList.propTypes = {
+    contacts: PropTypes.arrayOf(
+        PropTypes.shape({
+            number: PropTypes.number.isRequired,
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+        }),
+    ),
 }

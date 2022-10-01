@@ -1,16 +1,19 @@
 import { Component } from "react"
 import { nanoid } from "nanoid"
+import PropTypes from "prop-types"
 import { ContactList } from "./ContactList/ContactList"
 import { ContactForm } from "./ContactForm/ContactForm"
 import { Filter } from "./Filter/Filter"
+import { Wrap } from "./App.styled"
   
 export class App extends Component {
   state = {
-  contacts: [
-    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    
     ],
     filter: '',
   }
@@ -27,28 +30,29 @@ export class App extends Component {
     return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter))
   }
   
-
 ///////////////////////////////////////
   addFreind = ({name, number}) => {
-    
-    this.state.contacts.filter(el => {
-      el.name.toLowerCase() === name.toLowerCase()
-        ? console.log('Есть контакт!')
-        : console.log('Такого контакта нету')
-    })
     const contact = {
       id: nanoid(),
       name,
       number,
     }
+    const { contacts } = this.state
     
+    contacts.find(friend => friend.name.toLowerCase() === contact.name.toLowerCase())
+      ? alert(`${contact.name} is already in contacts.`)
+      :this.setState(({ contacts }) => ({
+      contacts:[contact, ...contacts]
+    }))
   }
-  
-  // getAllFriends = () => {
-  //   const {contacts} =this.state
-  // }
+  deleteFriend = friendId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== friendId)
+    }))
+  }
+
   render() {
-    return <div>
+    return <Wrap>
       <div>
         <h1>Phonebook</h1>
         <ContactForm onSubmit={ this.addFreind}/>
@@ -59,9 +63,23 @@ export class App extends Component {
           value={this.state.filter}
           onChange={this.changeFilter} />
         <ContactList
-          contacts={this.getVisibleFriends()}/>
+          contacts={this.getVisibleFriends()}
+          onDelete={this.deleteFriend}
+        />
         
       </div>
-      </div>
+      </Wrap>
   }
 };
+
+
+
+Wrap.propTypes = {
+    contacts: PropTypes.arrayOf(
+        PropTypes.shape({
+          number: PropTypes.number.isRequired,
+          id: PropTypes.string.isRequired,
+          name:PropTypes.string.isRequired,
+        }),
+    ),
+}
