@@ -1,6 +1,5 @@
 import { Component } from "react"
 import { nanoid } from "nanoid"
-import PropTypes from "prop-types"
 import { ContactList } from "./ContactList/ContactList"
 import { ContactForm } from "./ContactForm/ContactForm"
 import { Filter } from "./Filter/Filter"
@@ -30,19 +29,19 @@ export class App extends Component {
   }
   
 ///////////////////////////////////////
-  addFreind = ({name, number}) => {
+  addFreind = ({name, number}) => {    
+    const { contacts } = this.state
     const contact = {
       id: nanoid(),
       name,
       number,
-    }
-    const { contacts } = this.state
-    
-    contacts.find(friend => friend.name.toLowerCase() === contact.name.toLowerCase())
+    }  
+    contacts.find(friend => friend.name.toLowerCase() ===   contact.name.toLowerCase())
       ? alert(`${contact.name} is already in contacts.`)
       :this.setState(({ contacts }) => ({
       contacts:[contact, ...contacts]
     }))
+
   }
   deleteFriend = friendId => {
     this.setState(prevState => ({
@@ -70,15 +69,3 @@ export class App extends Component {
       </Wrap>
   }
 };
-
-
-
-Wrap.propTypes = {
-    contacts: PropTypes.arrayOf(
-        PropTypes.shape({
-          number: PropTypes.number.isRequired,
-          id: PropTypes.string.isRequired,
-          name:PropTypes.string.isRequired,
-        }),
-    ),
-}
